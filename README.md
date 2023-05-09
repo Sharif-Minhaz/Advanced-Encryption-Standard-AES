@@ -1,2 +1,3 @@
-# Advanced-Encryption-Standard-AES-
-AES cryptography development using JavaScript
+# Advanced-Encryption-Standard-AES (AES)
+
+AES cryptography development using JavaScript.
