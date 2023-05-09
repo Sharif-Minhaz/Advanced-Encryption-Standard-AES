@@ -1,0 +1,15 @@
+{
+  "name": "aes-development",
+  "version": "1.0.0",
+  "description": "AES cryptography development using javascript",
+  "main": "index.html",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "aes"
+  ],
+  "author": "Sharif Md. Minhaz",
+  "license": "ISC"
+}
