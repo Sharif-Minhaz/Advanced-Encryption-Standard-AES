@@ -1,55 +1,60 @@
-const mixColumnMatrix = [
-	["02", "03", "01", "01"],
-	["01", "02", "03", "01"],
-	["01", "01", "02", "03"],
-	["03", "01", "01", "02"],
+const rijndaelMatrix = [
+	[0x02, 0x03, 0x01, 0x01],
+	[0x01, 0x02, 0x03, 0x01],
+	[0x01, 0x01, 0x02, 0x03],
+	[0x03, 0x01, 0x01, 0x02],
 ];
 
-export const mixColumns = (
-	inputMatrix = [
-		["87", "f2", "4d", "97"],
-		["6e", "4c", "90", "ec"],
-		["46", "e7", "4a", "c3"],
-		["a6", "8c", "d8", "95"],
-	],
-	type = "normal"
-) => {
-	const result = [[], [], [], []];
-	// for (let i = 0; i < inputMatrix.length; i++) {
-	// 	const selectMixColumnMatrixRow = mixColumnMatrix[i].map((data) => parseInt(data, 16));
-	// 	const selectInputColumn = [0, 1, 2, 3].map((data) => parseInt(inputMatrix[data][i], 16));
+export const mixColumns = (inputMatrix, type = "normal") => {
+	let resultMatrix = [[], [], [], []];
 
-	// 	let mulResult = 0;
-
-	// 	for (let j = 0; j < selectMixColumnMatrixRow.length; j++) {
-	// 		mulResult ^= selectMixColumnMatrixRow[j] * selectInputColumn[j];
-	// 		result[i][j] = mulResult.toString(16);
-	// 	}
-	// }
-
+	// Perform mix-column operation for each column in the state matrix
 	for (let col = 0; col < 4; col++) {
-		const s0 = inputMatrix[col][0];
-		const s1 = inputMatrix[col][1];
-		const s2 = inputMatrix[col][2];
-		const s3 = inputMatrix[col][3];
+		for (let row = 0; row < 4; row++) {
+			let sum = "00"; // Initialize the sum
 
-		inputMatrix[col][0] = multiplyBy2(s0) ^ multiplyBy3(s1) ^ s2 ^ s3;
-		inputMatrix[col][1] = s0 ^ multiplyBy2(s1) ^ multiplyBy3(s2) ^ s3;
-		inputMatrix[col][2] = s0 ^ s1 ^ multiplyBy2(s2) ^ multiplyBy3(s3);
-		inputMatrix[col][3] = multiplyBy3(s0) ^ s1 ^ s2 ^ multiplyBy2(s3);
+			// Perform multiplication and addition for each element in the column
+			for (let i = 0; i < 4; i++) {
+				let rijndaelValue = rijndaelMatrix[row][i].toString(16).padStart(2, "0");
+				let stateValue = inputMatrix[i][col].toString(16).padStart(2, "0");
+				sum = gf8Addition(sum, gf8Multiplication(rijndaelValue, stateValue));
+			}
+
+			resultMatrix[row][col] = parseInt(sum, 16);
+		}
 	}
 
-	// console.log(result);
+	return resultMatrix;
 };
 
-mixColumns();
+// Multiplication operation in GF(2^8)
+function gf8Multiplication(value1, value2) {
+	let val1 = parseInt(value1, 16);
+	let val2 = parseInt(value2, 16);
+	let result = 0;
 
-// Helper function to multiply a value by 2 in the finite field
-function multiplyBy2(value) {
-	return (value << 1) ^ (value & 0x80 ? 0x1b : 0x00);
+	while (val2 > 0) {
+		if (val2 & 1) {
+			result ^= val1;
+		}
+
+		val1 <<= 1;
+
+		if (val1 & 0x100) {
+			val1 ^= 0x11b; // XOR with the irreducible polynomial x^8 + x^4 + x^3 + x + 1
+		}
+
+		val2 >>= 1;
+	}
+
+	return result.toString(16).padStart(2, "0");
 }
 
-// Helper function to multiply a value by 3 in the finite field
-function multiplyBy3(value) {
-	return multiplyBy2(value) ^ value;
+function gf8Addition(value1, value2) {
+	let val1 = parseInt(value1, 16);
+	let val2 = parseInt(value2, 16);
+
+	let result = val1 ^ val2;
+
+	return result.toString(16).padStart(2, "0");
 }

@@ -7,7 +7,7 @@ export const substituteBytes = (inputMatrix, type = "normal") => {
 		for (let j = 0; j < inputMatrix[i].length; j++) {
 			let state1 = inputMatrix[i][j].toString(16).split("");
 			state1.length === 1 && state1.unshift("0");
-			// converting the hex-string into decimal for sBox
+			// converting the hex-string into decimal for sBox row and col
 			let state2 = state1.map((value) => Number(`0x${value}`));
 
 			result[i][j] =

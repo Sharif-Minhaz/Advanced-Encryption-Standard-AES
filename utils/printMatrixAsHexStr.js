@@ -5,7 +5,7 @@ export default function printMatrixAsHexStr(inputMatrix) {
 		for (let j = 0; j < inputMatrix[i].length; j++) {
 			let value = inputMatrix[i][j].toString(16);
 			value = value.length === 1 ? "0" + value : value;
-			result[i][j] = value;
+			result[i][j] = value.toUpperCase();
 		}
 	}
 
