@@ -4,19 +4,20 @@ import { shiftRows } from "./shiftRows.js";
 import { substituteBytes } from "./substituteBytes.js";
 import printMatrixAsHexStr from "../utils/printMatrixAsHexStr.js";
 
-export const encryptionAES = (inputMatrix, key) => {
-	let result = [];
+export const encryptionAES = (inputMatrix, aesKey) => {
+	// Create a deep copy of the 'key' array
+	let key = aesKey.map((row) => [...row]);
 
 	console.log("Input: ", printMatrixAsHexStr(inputMatrix));
 
 	console.log("\nKey: ", printMatrixAsHexStr(key));
 
 	console.log("\n================== initial round ===================");
-	let state1 = addRoundKey(inputMatrix, key);
+	let state1 = addRoundKey(inputMatrix, key, 0);
 	console.log("Add round key: ", printMatrixAsHexStr(state1));
 
-	for (let index = 0; index < 10; index++) {
-		console.log("\n=================== Round: %d ===================", index + 1);
+	for (let index = 1; index < 11; index++) {
+		console.log("\n=================== Round: %d ===================", index);
 		let state2 = substituteBytes(state1);
 		console.log("Substitution bytes: ", printMatrixAsHexStr(state2));
 
@@ -31,9 +32,11 @@ export const encryptionAES = (inputMatrix, key) => {
 			state4 = state3;
 		}
 
-		let state5 = addRoundKey(state4, key);
+		let matrixes = addRoundKey(state4, key, index); // getting added round key matrix + new key
+		let state5 = matrixes[0];
 		console.log("\nAdd round key: ", printMatrixAsHexStr(state5));
 
+		key = matrixes[1]
 		state1 = state5;
 	}
 
