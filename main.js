@@ -1,23 +1,21 @@
 import { createInterface } from "readline";
 import { decryptionAES } from "./scripts/decryptionAES.js";
 import { encryptionAES } from "./scripts/encryptionAES.js";
-import { convertAsMatrix } from "./utils/covertAsMatrix.js";
+import { convertAsMatrix } from "./utils/covertMatrix.js";
 
-const rl = createInterface({
+const readLine = createInterface({
 	input: process.stdin,
 	output: process.stdout,
 });
 
-rl.question("Enter the message (128-bit hexadecimal format): ", (message) => {
-	rl.question("Enter the key (128-bit hexadecimal format): ", (aseKey) => {
+readLine.question("Enter the message (128-bit hexadecimal format): ", (message) => {
+	readLine.question("Enter the key (128-bit hexadecimal format): ", (aseKey) => {
 		const inputMatrix = convertAsMatrix(message);
 		const key = convertAsMatrix(aseKey);
 
-		console.log(inputMatrix, key);
-
 		main(inputMatrix, key);
 
-		rl.close();
+		readLine.close();
 	});
 });
 
@@ -39,3 +37,6 @@ function main(inputMatrix, key) {
 // 	[0x15, 0xd2, 0x15, 0x4f],
 // 	[0x16, 0xa6, 0x88, 0x3c],
 // ];
+
+// 8fe40429fe8b2193e85267b42aa9bcb6
+// 5463596d25df7cd403a0380bf3855858

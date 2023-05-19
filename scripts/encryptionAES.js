@@ -3,6 +3,7 @@ import { mixColumns } from "./mixColumns.js";
 import { shiftRows } from "./shiftRows.js";
 import { substituteBytes } from "./substituteBytes.js";
 import printMatrixAsHexStr from "../utils/printMatrixAsHexStr.js";
+import { generateHexString } from "../utils/covertMatrix.js";
 
 export const encryptionAES = (inputMatrix, aesKey) => {
 	// Create a deep copy of the 'key' array
@@ -25,7 +26,7 @@ export const encryptionAES = (inputMatrix, aesKey) => {
 		console.log("\nShift rows: ", printMatrixAsHexStr(state3));
 
 		let state4;
-		if (index !== 9) {
+		if (index !== 10) {
 			state4 = mixColumns(state3);
 			console.log("\nMix columns: ", printMatrixAsHexStr(state4));
 		} else {
@@ -42,5 +43,5 @@ export const encryptionAES = (inputMatrix, aesKey) => {
 
 	console.log("\n=================== Result ======================");
 
-	console.log("After Encryption: ", printMatrixAsHexStr(state1));
+	console.log("After Encryption: ", generateHexString(printMatrixAsHexStr(state1)));
 };

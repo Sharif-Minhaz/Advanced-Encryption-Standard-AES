@@ -12,6 +12,18 @@ export const convertAsMatrix = (str) => {
 		matrix.push(column);
 	}
 
+	return matrix;
+};
 
-    return matrix;
-}
+export const generateHexString = (matrix) => {
+	let hexString = "";
+
+	for (let col = 0; col < 4; col++) {
+		for (let row = 0; row < 4; row++) {
+			const hexSegment = matrix[row][col];
+			hexString += hexSegment;
+		}
+	}
+
+	return hexString;
+};
