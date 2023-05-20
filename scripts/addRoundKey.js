@@ -39,7 +39,7 @@ function keyExpansion(key, round) {
 			// converting the hex-string into decimal for sBox row and col
 			let state2 = state1.map((value) => Number(`0x${value}`));
 
-			expandedKey[i][j] = sBox[state2[0]][state2[1]] ^ reconTable[j][round - 1] ^ key[i][j];
+			expandedKey[i][j] = sBox[state2[0]][state2[1]] ^ reconTable[j][round] ^ key[i][j];
 		}
 	}
 

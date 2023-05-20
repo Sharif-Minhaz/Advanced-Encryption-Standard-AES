@@ -1,4 +1,4 @@
-import { sBox, inverseSBox } from "./sBoxes.js";
+import { sBox } from "./sBoxes.js";
 
 export const substituteBytes = (inputMatrix, type = "normal") => {
 	const result = [[], [], [], []];
@@ -10,8 +10,7 @@ export const substituteBytes = (inputMatrix, type = "normal") => {
 			// converting the hex-string into decimal for sBox row and col
 			let state2 = state1.map((value) => Number(`0x${value}`));
 
-			result[i][j] =
-				type === "normal" ? performSubstitute(state2) : performInverseSubstitute(state2);
+			result[i][j] = performSubstitute(state2);
 		}
 	}
 
@@ -20,8 +19,4 @@ export const substituteBytes = (inputMatrix, type = "normal") => {
 
 function performSubstitute(state) {
 	return sBox[state[0]][state[1]];
-}
-
-function performInverseSubstitute(state) {
-	return inverseSBox[state[0]][state[1]];
 }

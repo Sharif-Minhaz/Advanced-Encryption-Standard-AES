@@ -5,7 +5,7 @@ const rijndaelMatrix = [
 	[0x03, 0x01, 0x01, 0x02],
 ];
 
-export const mixColumns = (inputMatrix, type = "normal") => {
+export const mixColumns = (inputMatrix) => {
 	let resultMatrix = [[], [], [], []];
 
 	// Perform mix-column operation for each column in the state matrix
